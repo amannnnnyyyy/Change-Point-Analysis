@@ -13,14 +13,11 @@ def change_point_analysis(data):
     mean_diff_threshold = 10 
     significant_mean_diff_threshold = 20
 
-    # Detect peaks (maxima) and troughs (minima)
     peaks, _ = find_peaks(data['Price'], distance=min_distance)
-    troughs, _ = find_peaks(-data['Price'], distance=min_distance)  # Invert for troughs
+    troughs, _ = find_peaks(-data['Price'], distance=min_distance)
 
-    # Combine peaks and troughs as potential change points
     extrema = sorted(np.concatenate((peaks, troughs)))
 
-    # Detect significant mean changes across the dataset
     for i in range(min_distance, len(data) - min_distance):
         before_data = data['Price'][:i]
         after_data = data['Price'][i:]
@@ -37,6 +34,29 @@ def change_point_analysis(data):
 
     all_change_points = sorted(set(change_points + extrema))
     all_significant_change_points = sorted(set(significant_change_points + extrema))
+
+    results = {
+        'Type': [],
+        'Date': [],
+        'Price': []
+    }
+
+    # Define key events with additional significant dates
+    key_events = {
+        pd.to_datetime('1973-10-17'): '1973 Oil Crisis',
+        pd.to_datetime('1979-01-01'): '1979 Oil Crisis',
+        pd.to_datetime('1990-08-02'): '1990 Gulf War',
+        pd.to_datetime('2003-03-20'): '2003 Iraq War',
+        pd.to_datetime('2011-01-25'): '2011 Arab Spring',
+        pd.to_datetime('2014-11-27'): '2014 Oil Price Crash',
+        pd.to_datetime('2016-11-30'): '2016 OPEC Production Cut',
+        pd.to_datetime('2021-02-14'): '2021 Texas Winter Storm',
+        pd.to_datetime('1986-02-18'): '1986 Oil Price Crash',
+        pd.to_datetime('1998-12-10'): '1998 Asian Financial Crisis',
+        pd.to_datetime('2008-11-24'): '2008 Financial Crisis',
+        pd.to_datetime('2020-04-21'): '2020 COVID-19 Pandemic',
+        pd.to_datetime('2022-03-08'): '2022 Geopolitical Tensions',
+    }
 
     def plot_segment(data, start_idx, end_idx, change_points, significant_change_points):
         plt.figure(figsize=(14, 7))
@@ -60,11 +80,20 @@ def change_point_analysis(data):
                             arrowprops=dict(arrowstyle='->', color='red'),
                             fontsize=10, color='red')
 
+        # Annotate key events
+        for event_date, event_name in key_events.items():
+            event_rows = data[data['Date'] == event_date]
+            if not event_rows.empty:  # Check if the filtered DataFrame is not empty
+                plt.annotate(event_name, xy=(event_date, event_rows['Price'].values[0]), 
+                            xytext=(5, -25), textcoords='offset points',
+                            fontsize=10, color='purple', bbox=dict(facecolor='white', alpha=0.5))
+
         plt.xlabel('Date')
         plt.ylabel('Price (USD)')
         plt.title(f'Brent Oil Prices from {data["Date"].iloc[start_idx]} to {data["Date"].iloc[end_idx-1]}')
         plt.legend()
         plt.show()
+
 
     segment_size = 500
 
@@ -73,10 +102,18 @@ def change_point_analysis(data):
         end_idx = min(i + segment_size, len(data))
         plot_segment(data, start_idx, end_idx, change_points, significant_change_points)
 
-    print("Detected Change Points:")
     for cp in all_change_points:
-        print(f"Date: {data['Date'].iloc[cp].date()}, Price: {data['Price'].iloc[cp]:.2f}")
-        
-    print("\nSignificant Change Points:")
+        results['Type'].append('Change Point')
+        results['Date'].append(data['Date'].iloc[cp].date())
+        results['Price'].append(data['Price'].iloc[cp])
+
     for scp in all_significant_change_points:
-        print(f"Date: {data['Date'].iloc[scp].date()}, Price: {data['Price'].iloc[scp]:.2f}")
+        results['Type'].append('Significant Change Point')
+        results['Date'].append(data['Date'].iloc[scp].date())
+        results['Price'].append(data['Price'].iloc[scp])
+
+    results_df = pd.DataFrame(results)
+
+    results_df.to_csv('../docs/change_points_results.csv', index=False)
+
+    print("Detected Change Points and Significant Change Points have been saved to 'docs/change_points_results.csv'.")
