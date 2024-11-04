@@ -43,19 +43,22 @@ def change_point_analysis(data):
 
     # Define key events with additional significant dates
     key_events = {
-        pd.to_datetime('1973-10-17'): '1973 Oil Crisis',
-        pd.to_datetime('1979-01-01'): '1979 Oil Crisis',
+        pd.to_datetime('1987-10-19'): '1987 Stock Market Crash',
         pd.to_datetime('1990-08-02'): '1990 Gulf War',
+        pd.to_datetime('1997-07-01'): '1997 Asian Financial Crisis',
+        pd.to_datetime('1998-12-10'): '1998 Asian Financial Crisis',
+        pd.to_datetime('2001-09-11'): '2001 9/11 Attacks',
         pd.to_datetime('2003-03-20'): '2003 Iraq War',
+        pd.to_datetime('2005-08-29'): '2005 Hurricane Katrina',
+        pd.to_datetime('2008-11-24'): '2008 Financial Crisis',
         pd.to_datetime('2011-01-25'): '2011 Arab Spring',
+        pd.to_datetime('2011-02-15'): '2011 Libyan Civil War',
+        pd.to_datetime('2014-06-01'): '2014 ISIS Advancements in Iraq',
         pd.to_datetime('2014-11-27'): '2014 Oil Price Crash',
         pd.to_datetime('2016-11-30'): '2016 OPEC Production Cut',
-        pd.to_datetime('2021-02-14'): '2021 Texas Winter Storm',
-        pd.to_datetime('1986-02-18'): '1986 Oil Price Crash',
-        pd.to_datetime('1998-12-10'): '1998 Asian Financial Crisis',
-        pd.to_datetime('2008-11-24'): '2008 Financial Crisis',
         pd.to_datetime('2020-04-21'): '2020 COVID-19 Pandemic',
-        pd.to_datetime('2022-03-08'): '2022 Geopolitical Tensions',
+        pd.to_datetime('2021-02-14'): '2021 Texas Winter Storm',
+        pd.to_datetime('2022-03-08'): '2022 Geopolitical Tensions (Russian-Ukraine)'
     }
 
     def plot_segment(data, start_idx, end_idx, change_points, significant_change_points):
