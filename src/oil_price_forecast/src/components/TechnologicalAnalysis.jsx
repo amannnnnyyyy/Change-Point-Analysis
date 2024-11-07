@@ -16,7 +16,7 @@ const TechnologicalAnalysis = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/api/tech_data');
+                const response = await axios.get('https://backend-brent-oil-latest-1.onrender.com/api/tech_data');
                 setTechData(Array.isArray(response.data) ? response.data : []);
             } catch (error) {
                 console.error('Error fetching data:', error);

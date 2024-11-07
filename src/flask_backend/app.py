@@ -12,8 +12,8 @@ Compress(app)  # Enable GZIP compression for responses
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 # Load the dataset
-econ_data = pd.read_csv('../../docs/Economid_data.csv', parse_dates=['Date'])
-tech_data = pd.read_csv('../../docs/technological_data.csv')
+econ_data = pd.read_csv('Economid_data.csv', parse_dates=['Date'])
+tech_data = pd.read_csv('technological_data.csv')
 
 @app.route('/api/econ_data', methods=['GET'])
 @cache.cached(timeout=60, query_string=True)  # Cache results for 60 seconds
