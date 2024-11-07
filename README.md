@@ -192,4 +192,4 @@ You can access the interactive dashboard and explore the Brent oil price data al
 
 ### Screenshot
 
-![Screenshot of the Deployed Site](assets/screenshot.png)
+![Screenshot of the Deployed Site](assets/image.png)
