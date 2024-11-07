@@ -37,7 +37,7 @@ const EconomicAnalysis = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('http://127.0.0.1:5000/api/econ_data', {
+            const response = await axios.get('https://backend-brent-oil-latest-1.onrender.com/api/econ_data', {
                 params: {
                     start_date: startDate ? startDate.toISOString().split('T')[0] : null,
                     end_date: endDate ? endDate.toISOString().split('T')[0] : null,
